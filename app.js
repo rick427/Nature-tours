@@ -57,5 +57,39 @@ app.post('/api/v1/tours', (req, res) => {
     });
 });
 
+app.patch('/api/v1/tours/:id', (req, res) => {
+    const id = JSON.parse(req.params.id);
+
+    if (id > tours.length) {
+        return res.status(404).json({
+            status: 'fail',
+            Message: 'Not Found..'
+        });
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            tour: 'Updated Tour'
+        }
+    })
+})
+
+app.delete('/api/v1/tours/:id', (req, res) => {
+    const id = JSON.parse(req.params.id);
+
+    if (id > tours.length) {
+        return res.status(404).json({
+            status: 'fail',
+            Message: 'Not Found..'
+        });
+    }
+
+    res.status(204).json({
+        status: 'success',
+        data: null
+    });
+});
+
 const port = 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
