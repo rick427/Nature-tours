@@ -4,14 +4,26 @@ const fs = require('fs');
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
 
 exports.checkId = (req, res, next, val) => {
-    //console.log(`Tour id is ${val}`);
-
     const id = JSON.parse(req.params.id);
     if (id > tours.length) {
         return res.status(404).json({
             status: 'fail',
             Message: 'Not Found..'
         });
+    }
+    next();
+}
+
+exports.checkBody = (req, res, next) => {
+    const {
+        name,
+        price
+    } = req.body;
+    if (!name || !price) {
+        return res.status(400).json({
+            status: 'fail',
+            message: 'Missing name or price'
+        })
     }
     next();
 }
@@ -46,7 +58,7 @@ exports.createTour = (req, res) => {
 
     tours.push(newTour);
 
-    fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours), err => {
+    fs.writeFile(`${__dirname}/../dev-data/data/tours-simple.json`, JSON.stringify(tours), err => {
         if (err) return console.log(err);
         res.status(201).json({
             status: 'success',
