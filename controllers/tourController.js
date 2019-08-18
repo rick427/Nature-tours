@@ -1,11 +1,21 @@
 const Tours = require('../models/Tour');
 
 //:ROUTE HANDLERS
-//const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
-
 exports.getAllTours = async (req, res) => {
     try {
-        const tours = await Tours.find();
+        //:BUILD QUERY
+        const queryObj = {
+            ...req.query
+        };
+        const excludeFields = ['page', 'sort', 'limit', 'fields'];
+        excludeFields.forEach(ex => delete queryObj[ex]);
+
+        const query = await Tours.find(queryObj);
+
+        //: EXECUTE QUERY
+        const tours = await query;
+
+        //: SEND QUERY 
         res.status(200).json({
             status: 'success',
             results: tours.length,
