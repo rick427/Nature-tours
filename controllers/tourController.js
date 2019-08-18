@@ -4,13 +4,18 @@ const Tours = require('../models/Tour');
 exports.getAllTours = async (req, res) => {
     try {
         //:BUILD QUERY
+        // 1) filtering
         const queryObj = {
             ...req.query
         };
         const excludeFields = ['page', 'sort', 'limit', 'fields'];
         excludeFields.forEach(ex => delete queryObj[ex]);
 
-        const query = await Tours.find(queryObj);
+        //2) Advanced Filtering ie adding dollar to mongo operators
+        let queryStr = JSON.stringify(queryObj)
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+
+        const query = await Tours.find(JSON.parse(queryStr));
 
         //: EXECUTE QUERY
         const tours = await query;
