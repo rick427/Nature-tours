@@ -13,11 +13,11 @@ const filterObj = (obj, ...allowedFields) => {
 //:ROUTE HANDLERS
 
 exports.getAllUsers = catchAsync(async (req, res) => {
-    const user = await User.find()
+    const users = await User.find()
 
     res.status(500).json({
         status: 'success',
-        results: user.length,
+        results: users.length,
         data: {users}
     });
 });
@@ -43,6 +43,15 @@ exports.updateMe = catchAsync(async (req, res, next) => {
        }
    })
 });
+
+exports.deleteMe = catchAsync(async (req, res, next) => {
+    await User.findByIdAndUpdate(req.user.id, {active: false});
+
+    res.status(204).json({
+        status: 'success',
+        data: null
+    })
+})
 
 exports.createUser = (req, res) => {
     res.status(500).json({
