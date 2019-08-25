@@ -14,6 +14,11 @@ const signedToken = id => {
 
 const createSendToken = (user, statusCode, res) => {
     const token = signedToken(user._id);
+
+    // res.cookie('jwt', token, {
+    //     expires: 
+    // })
+
     res.status(statusCode).json({
         status: 'success',
         token,
