@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
-const reviewController = require('../controllers/reviewController');
 
 // :AUTH ROUTES
 router.post('/signup', authController.signup);
@@ -25,13 +24,5 @@ router
     .get(userController.getUserById)
     .patch(userController.updateUser)
     .delete(userController.deleteUser);
-
-router
-    .route('/:tourId/reviews')
-    .post(
-        authController.protected, 
-        authController.restrictTo('user'),
-        reviewController.createReview
-    )
 
 module.exports = router;
