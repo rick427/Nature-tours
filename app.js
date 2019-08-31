@@ -56,9 +56,11 @@ app.use(express.static(`${__dirname}/public`));
 //:ROUTES
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRoute');
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 app.all('*', (req, res, next) => {
     // const err = new Error(`Cannot find ${req.originalUrl} on this server`);
