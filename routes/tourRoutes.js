@@ -9,17 +9,31 @@ const reviewRoute = require('../routes/reviewRoute');
 
 router.route('/top-5-cheap').get(tourController.aliasTopTours, tourController.getAllTours)
 router.route('/tour-stats').get(tourController.getTourStats);
-router.route('/monthly-plan/:year').get(tourController.getMonthlyplan);
+router
+  .route('/monthly-plan/:year')
+  .get(
+    authController.protected, 
+    authController.restrictTo('admin', 'lead-guide', 'guide'), 
+    tourController.getMonthlyplan
+   );
 
 router
     .route('/')
     .get(authController.protected, tourController.getAllTours)
-    .post(tourController.createTour);
+    .post(
+        authController.protected, 
+        authController.restrictTo('admin', 'lead-guide'), 
+        tourController.createTour
+    );
 
 router
     .route('/:id')
     .get(tourController.getTour)
-    .patch(tourController.updateTour)
+    .patch(
+        authController.protected, 
+        authController.restrictTo('admin', 'lead-guide'), 
+        tourController.updateTour
+    )
     .delete( 
         authController.protected, 
         authController.restrictTo('admin', 'lead-guide'), 
