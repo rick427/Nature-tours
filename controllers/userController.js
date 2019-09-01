@@ -11,6 +11,11 @@ const filterObj = (obj, ...allowedFields) => {
     return newObject
 }
 
+exports.getMe = (req, res, next) => {
+    req.params.id = req.user.id;
+    next();
+}
+
 //:ROUTE HANDLERS
 
 exports.updateMe = catchAsync(async (req, res, next) => {
@@ -51,9 +56,11 @@ exports.createUser = (req, res) => {
     })
 }
 
-// Only for admin, do not update password with this route
 exports.getAllUsers = factory.getAll(User);
 
+exports.getUser = factory.getOne(User);
+
+// Only for admin, do not update password with this route
 exports.updateUser = factory.updateOne(User);
 
 exports.deleteUser = factory.deleteOne(User);
