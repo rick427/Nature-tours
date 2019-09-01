@@ -13,16 +13,6 @@ const filterObj = (obj, ...allowedFields) => {
 
 //:ROUTE HANDLERS
 
-exports.getAllUsers = catchAsync(async (req, res) => {
-    const users = await User.find()
-
-    res.status(500).json({
-        status: 'success',
-        results: users.length,
-        data: {users}
-    });
-});
-
 exports.updateMe = catchAsync(async (req, res, next) => {
    // 1) create error if user tries to update password
    if(req.body.password || req.body.passwordConfirm) {
@@ -57,18 +47,15 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 exports.createUser = (req, res) => {
     res.status(500).json({
         status: 'error',
-        message: 'This route is not yet defined'
+        message: 'This route is not yet defined! Please use signup instead'
     })
 }
 
 // Only for admin, do not update password with this route
+exports.getAllUsers = factory.getAll(User);
+
 exports.updateUser = factory.updateOne(User);
 
 exports.deleteUser = factory.deleteOne(User);
 
-exports.getUserById = (req, res) => {
-    res.status(500).json({
-        status: 'error',
-        message: 'This route is not yet defined'
-    })
-}
+exports.getUserById = factory.getOne(User);

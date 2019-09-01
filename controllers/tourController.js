@@ -1,8 +1,18 @@
 const Tours = require('../models/Tour');
-const APIFeatures = require('../utils/apiFeatures');
-const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
 const factory = require('../controllers/handlerFactory');
+
+
+exports.getAllTours = factory.getAll(Tours);
+
+exports.getTour = factory.getOne(Tours, {path: 'reviews'});
+
+exports.createTour = factory.createOne(Tours);
+
+exports.updateTour = factory.updateOne(Tours)
+
+exports.deleteTour = factory.deleteOne(Tours);
 
 //:ROUTE HANDLERS
 
@@ -12,47 +22,6 @@ exports.aliasTopTours = (req, res, next) => {
     req.query.fields = 'name,price,ratingAverage,summary,difficulty';
     next();
 }
-
-exports.getAllTours = catchAsync(async (req, res, next) => {
-
-    //: EXECUTE QUERY
-    const features = new APIFeatures(Tours.find(), req.query)
-        .filter()
-        .sort()
-        .limitFields()
-        .paginate()
-    const tours = await features.query;
-
-    //: SEND QUERY 
-    res.status(200).json({
-        status: 'success',
-        results: tours.length,
-        data: {
-            tours
-        }
-    });
-});
-
-exports.getTour = catchAsync(async (req, res, next) => {
-    //Tours.findOne({_id: req.params.id})
-    const tour = await Tours.findById(req.params.id).populate('reviews');
-
-    if(!tour){
-        return next(new AppError('No tour found with that ID', 404))
-    }
-
-    res.status(200).json({
-        status: 'success',
-        data: tour
-    });
-    
-});
-
-exports.createTour = factory.createOne(Tours);
-
-exports.updateTour = factory.updateOne(Tours)
-
-exports.deleteTour = factory.deleteOne(Tours);
 
 //AGGREGATION  PIPELINE
 exports.getTourStats = catchAsync(async (req, res, next) => {
