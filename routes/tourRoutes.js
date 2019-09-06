@@ -18,6 +18,11 @@ router
    );
 
 router
+   .route('/tours-within/:distance/center/:latlang/unit/:unit')
+   .get(tourController.getToursWithin);
+ 
+
+router
     .route('/')
     .get(authController.protected, tourController.getAllTours)
     .post(
