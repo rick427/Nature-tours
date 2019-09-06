@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -11,7 +12,13 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'))
+
 //:GLOBAL MIDDLEWARES
+
+//Serving static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Security HTTP headers
 app.use(helmet());
@@ -50,10 +57,12 @@ app.use(hpp({
     ]
 }));
 
-//Serving static files
-app.use(express.static(`${__dirname}/public`));
 
 //:ROUTES
+app.get('/', (req, res) => {
+    res.status(200).render('base');
+})
+
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoute');
