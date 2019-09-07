@@ -1,1 +1,1 @@
-An App about touring nature. Built with the Nodejs Framework
+A server-side rendered app for a company that creates different kinds of tours for clients. Built with the Nodejs Framework and incoorperates the MVC architecture. The app uses PUG templating engine and has a variety of security measures to prevent any kinds of hacks from outside parties.
