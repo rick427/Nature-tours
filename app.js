@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -38,6 +39,9 @@ app.use('/api', limiter); // apply limiter to all routes starting with '/api
 
 //Body parser
 app.use(express.json({limit: '10kb'}));
+
+//Cookie parser
+app.use(cookieParser());
 
 //Data sanitization against NOSQL QUERY INJECTION
 app.use(mongoSanitize());
