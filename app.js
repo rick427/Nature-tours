@@ -39,6 +39,7 @@ app.use('/api', limiter); // apply limiter to all routes starting with '/api
 
 //Body parser
 app.use(express.json({limit: '10kb'}));
+app.use(express.urlencoded({extended: true, limit: '10kb'}))
 
 //Cookie parser
 app.use(cookieParser());
