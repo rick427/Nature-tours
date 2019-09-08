@@ -19,6 +19,9 @@ exports.getMe = (req, res, next) => {
 //:ROUTE HANDLERS
 
 exports.updateMe = catchAsync(async (req, res, next) => {
+    console.log(req.file);
+    console.log(req.body);
+    
    // 1) create error if user tries to update password
    if(req.body.password || req.body.passwordConfirm) {
        return next(new AppError('This route is not for password updates, please use /updatePassword', 400));
