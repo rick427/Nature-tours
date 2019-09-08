@@ -81,8 +81,11 @@ exports.protected = catchAsync(async (req, res, next) => {
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         token = req.headers.authorization.split(' ')[1];
     }
-    else if (req.cookie.jwt){
-        token = req.cookie.jwt
+    // else if (req.cookies.jwt){
+    //     token = req.cookies.jwt
+    // }
+    else if(req.cookies.jwt && req.cookies.jwt !== 'loggedout'){
+        token = req.cookies.jwt;
     }
 
     if(!token){
@@ -104,6 +107,7 @@ exports.protected = catchAsync(async (req, res, next) => {
     }
 
     req.user = currentUser;
+    res.locals.user = currentUser;
     next();
 });
 
